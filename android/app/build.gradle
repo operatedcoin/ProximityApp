@@ -81,9 +81,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace 'com.nickatkins.ProximityEngineApp'
+    namespace 'com.operatedcoin.proximityapp'
     defaultConfig {
-        applicationId 'com.nickatkins.ProximityEngineApp'
+        applicationId 'com.operatedcoin.proximityapp'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

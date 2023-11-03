@@ -1,4 +1,4 @@
-package com.nickatkins.ProximityEngineApp;
+package com.operatedcoin.proximityapp;
 
 import android.app.Application;
 import android.content.res.Configuration;

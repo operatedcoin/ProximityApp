@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ProximityEngineApp",
-    "slug": "ProximityEngineApp",
+    "name": "proximity-app",
+    "slug": "proximity-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,17 +16,40 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.operatedcoin.ProximityEngineApp"
+      "bundleIdentifier": "com.operatedcoin.proximityapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.nickatkins.ProximityEngineApp"
+      "permissions": [
+        "android.permission.BLUETOOTH",
+        "android.permission.BLUETOOTH_ADMIN",
+        "android.permission.BLUETOOTH_CONNECT"
+      ],
+      "package": "com.operatedcoin.proximityapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "@config-plugins/react-native-ble-plx",
+        {
+          "isBackgroundEnabled": true,
+          "modes": [
+            "peripheral",
+            "central"
+          ],
+          "bluetoothAlwaysPermission": "Allow $(PRODUCT_NAME) to connect to bluetooth devices"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "8fefecff-273b-4aa4-8019-738fc18ec837"
+      }
     }
   }
 }

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "ProximityEngineApp.app"
-               BlueprintName = "ProximityEngineApp"
-               ReferencedContainer = "container:ProximityEngineApp.xcodeproj">
+               BuildableName = "proximityapp.app"
+               BlueprintName = "proximityapp"
+               ReferencedContainer = "container:proximityapp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "ProximityEngineAppTests.xctest"
-               BlueprintName = "ProximityEngineAppTests"
-               ReferencedContainer = "container:ProximityEngineApp.xcodeproj">
+               BuildableName = "proximityappTests.xctest"
+               BlueprintName = "proximityappTests"
+               ReferencedContainer = "container:proximityapp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "ProximityEngineApp.app"
-            BlueprintName = "ProximityEngineApp"
-            ReferencedContainer = "container:ProximityEngineApp.xcodeproj">
+            BuildableName = "proximityapp.app"
+            BlueprintName = "proximityapp"
+            ReferencedContainer = "container:proximityapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "ProximityEngineApp.app"
-            BlueprintName = "ProximityEngineApp"
-            ReferencedContainer = "container:ProximityEngineApp.xcodeproj">
+            BuildableName = "proximityapp.app"
+            BlueprintName = "proximityapp"
+            ReferencedContainer = "container:proximityapp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
