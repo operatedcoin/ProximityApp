@@ -5,6 +5,7 @@ import { BleManager, ScanMode } from 'react-native-ble-plx';
 import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
 import DeviceInfo from 'react-native-device-info';
 
+
 const bleManager = new BleManager();
 
 type VoidCallback = (result: boolean) => void;
@@ -16,7 +17,7 @@ interface BluetoothLowEnergyApi {
   deviceRSSIs: { [device: string]: number | null };
 }
 
-export const targetDevices = ['MsgOne', 'MsgTwo', 'MsgThree', 'MsgFour', 'MsgFive', 'MsgSix', 'MsgSeven', 'MsgEight'];
+export const targetDevices = ['MsgOne', 'MsgTwo', 'MsgThree', 'MsgFour', 'MsgFive', 'MsgSix', 'MsgSeven', 'MsgEight', 'ghost'];
 
 function useBLE(): BluetoothLowEnergyApi {
   const [deviceRSSIs, setDeviceRSSIs] = useState<{ [device: string]: number | null }>({});
@@ -140,6 +141,7 @@ function useBLE(): BluetoothLowEnergyApi {
       }
     );
   }, []);
+
 
   return {
     requestPermissions,
