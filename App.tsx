@@ -8,6 +8,20 @@ import { Audio } from 'expo-av';
 
 const ios = Platform.OS === 'ios';
 
+const soundFileMap = {
+    MsgOne: require('./audio/asound.m4a'),
+    MsgTwo: require('./audio/csound.m4a'),
+    MsgThree: require('./audio/dsound.m4a'),
+    MsgFour: require('./audio/esound.m4a'),
+    MsgFive: require('./audio/fsound.m4a'),
+    MsgSix: require('./audio/gsound.m4a'),
+    MsgSeven: require('./audio/asound.m4a'),
+    MsgEight: require('./audio/csound.m4a'),
+    ghost: require('./audio/sample-short.m4a'),
+    // ... add mappings for other beacons
+    // MsgThree, MsgFour, MsgFive, MsgSix, MsgSeven, MsgEight, ghost
+};
+
 
 
 function BLEDevicesScreen() {
@@ -19,29 +33,24 @@ function BLEDevicesScreen() {
     } = useBLE();
   
     const initialDevices = targetDevices.map(device => ({ name: device, rssi: null, soundPlayed: false }));
-    const [devices, setDevices] = useState<Array<{ name: string; rssi: number | null }>>(initialDevices);
+    const [devices, setDevices] = useState<Array<{
+        soundPlayed: any; name: string; rssi: number | null 
+}>>(initialDevices);
     const [isScanning, setIsScanning] = useState<boolean>(true);
 
     const [sound, setSound] = useState();
 
-const playSound = async () => {
-  const { sound: soundObject, status } = await Audio.Sound.createAsync(
-    require('./audio/sample-short.m4a'),
-    
-    { shouldPlay: true }
-  );
-  setSound(soundObject);
-  await soundObject.playAsync(); 
-};
+    const playSound = async (beaconName) => {
+        const soundToPlay = soundFileMap[beaconName];
+        if (soundToPlay) {
+            const { sound: soundObject } = await Audio.Sound.createAsync(soundToPlay, { shouldPlay: true });
+            setSound(soundObject);
+            await soundObject.playAsync(); 
+        }
+    };
 
 // Don't forget to unload the sound when the component will unmount
-useEffect(() => {
-  return sound
-    ? () => {
-        sound.unloadAsync();
-      }
-    : undefined;
-}, [sound]);
+
   
     useEffect(() => {
       // Request permissions when component mounts
@@ -64,19 +73,13 @@ useEffect(() => {
             return prevDevices.map(device => {
                 const newRssi = deviceRSSIs[device.name] ?? null;
     
-                if (newRssi > -50) {
-                    // If RSSI is greater than -50 and sound has not been played, play it
-                    if (!device.soundPlayed) {
-                        playSound();
-                        return { ...device, rssi: newRssi, soundPlayed: true };
-                    }
-                } else {
-                    // If RSSI goes below -50, reset soundPlayed flag
-                    if (device.soundPlayed) {
-                        return { ...device, rssi: newRssi, soundPlayed: false };
-                    }
+                if (newRssi > -50 && !device.soundPlayed) {
+                    playSound(device.name);
+                    return { ...device, rssi: newRssi, soundPlayed: true };
+                } else if (newRssi <= -50 && device.soundPlayed) {
+                    return { ...device, rssi: newRssi, soundPlayed: false };
                 }
-                // If RSSI is not greater than -50 or sound has been played, just update RSSI
+    
                 return { ...device, rssi: newRssi };
             });
         });

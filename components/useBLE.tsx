@@ -125,22 +125,35 @@ function useBLE(): BluetoothLowEnergyApi {
           console.error("BLE Scan Error:", error);
           return;
         }
-
+  
         const deviceName = device?.name;
         const deviceRssi = device?.rssi;
+        const now = Date.now();
+  
         if (deviceName && targetDevices.includes(deviceName)) {
-          setDeviceRSSIs((prevRSSIs) => {
-            const updatedRSSIs = { ...prevRSSIs, [deviceName]: deviceRssi };
-            return updatedRSSIs as { [device: string]: number | null };
-          });          
           setDeviceLastUpdated((prevLastUpdated) => {
-            const updatedLastUpdated = { ...prevLastUpdated, [deviceName]: Date.now() };
-            return updatedLastUpdated as { [device: string]: number };
+            const lastUpdated = prevLastUpdated[deviceName] || 0;
+  
+            // Throttle updates: only update if it's been more than 1000ms
+            if (now - lastUpdated > 1000) {
+              setDeviceRSSIs((prevRSSIs) => ({
+                ...prevRSSIs,
+                [deviceName]: deviceRssi,
+              }));
+              
+              return {
+                ...prevLastUpdated,
+                [deviceName]: now,
+              };
+            }
+  
+            return prevLastUpdated;
           });          
         }
       }
     );
   }, []);
+  
 
 
   return {
