@@ -8,6 +8,7 @@ import DeviceInfo from 'react-native-device-info';
 
 const bleManager = new BleManager();
 
+
 type VoidCallback = (result: boolean) => void;
 
 interface BluetoothLowEnergyApi {
@@ -22,6 +23,23 @@ export const targetDevices = ['MsgOne', 'MsgTwo', 'MsgThree', 'MsgFour', 'MsgFiv
 function useBLE(): BluetoothLowEnergyApi {
   const [deviceRSSIs, setDeviceRSSIs] = useState<{ [device: string]: number | null }>({});
   const [deviceLastUpdated, setDeviceLastUpdated] = useState<{ [device: string]: number }>({});
+ 
+  const [userPosition, setUserPosition] = useState({ x: 0, y: 0 });
+
+  // Coordinates of your beacons (example values, replace with your actual coordinates)
+   const beaconPositions = {
+    MsgThree: { x: 0, y: 0 },
+    MsgFour: { x: 270, y: 0 },
+    MsgEight: { x: 0, y: 460 },
+    MsgSix: { x: 270, y: 460 },
+    // Add other beacons if necessary
+  };
+
+    // Function to calculate user position using trilateration (placeholder)
+    const calculateUserPosition = () => {
+      // Implement trilateration logic here
+      // Example: setUserPosition({ x: calculatedX, y: calculatedY });
+    };
 
   useEffect(() => {
     const deviceLostThreshold = 5000;
@@ -113,6 +131,12 @@ function useBLE(): BluetoothLowEnergyApi {
     setDeviceLastUpdated({});
   }, []);
 
+  function rssiToDistance(rssi) {
+    const A = -65; // RSSI value at 1 meter
+    const n = 2.5; // Path-loss exponent (adjust based on your environment)
+    return 10 ** ((rssi - A) / (-10 * n));
+  }
+  
   const scanForPeripherals = useCallback(() => {
     bleManager.startDeviceScan(
       null,
@@ -134,13 +158,13 @@ function useBLE(): BluetoothLowEnergyApi {
           setDeviceLastUpdated((prevLastUpdated) => {
             const lastUpdated = prevLastUpdated[deviceName] || 0;
   
-            // Throttle updates: only update if it's been more than 1000ms
-            if (now - lastUpdated > 1000) {
+            if (now - lastUpdated > 500) {
+              const distance = rssiToDistance(deviceRssi);
               setDeviceRSSIs((prevRSSIs) => ({
                 ...prevRSSIs,
-                [deviceName]: deviceRssi,
+                [deviceName]: distance, // Store the calculated distance
               }));
-              
+  
               return {
                 ...prevLastUpdated,
                 [deviceName]: now,
@@ -148,11 +172,12 @@ function useBLE(): BluetoothLowEnergyApi {
             }
   
             return prevLastUpdated;
-          });          
+          });
         }
       }
     );
   }, []);
+  
   
 
 

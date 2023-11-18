@@ -73,17 +73,28 @@ function BLEDevicesScreen() {
             return prevDevices.map(device => {
                 const newRssi = deviceRSSIs[device.name] ?? null;
     
-                if (newRssi > -50 && !device.soundPlayed) {
-                    playSound(device.name);
-                    return { ...device, rssi: newRssi, soundPlayed: true };
-                } else if (newRssi <= -50 && device.soundPlayed) {
-                    return { ...device, rssi: newRssi, soundPlayed: false };
+                // Check if the device was previously detected
+                const wasDetected = device.rssi !== null;
+    
+                if (newRssi !== null) {
+                    if (newRssi > -80 && !device.soundPlayed && wasDetected) {
+                        playSound(device.name);
+                        return { ...device, rssi: newRssi, soundPlayed: true };
+                    } else if (newRssi <= -80 && device.soundPlayed) {
+                        return { ...device, rssi: newRssi, soundPlayed: false };
+                    }
+                } else {
+                    // Handling the case when RSSI becomes null
+                    if (device.soundPlayed) {
+                        return { ...device, rssi: newRssi, soundPlayed: false };
+                    }
                 }
     
                 return { ...device, rssi: newRssi };
             });
         });
     }, [deviceRSSIs]);
+    
   
     return (
         <View className="flex bg-gray-100">
